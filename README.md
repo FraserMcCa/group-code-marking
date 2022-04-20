@@ -83,7 +83,7 @@ You should now have a project with a pom that looks something like this:
 ```
 
 Right now, there are no services in this app, so if you were to run it and navigate to http://localhost:8080, you 
-would only get a 404 page. So let's add a controller called `no.kantega.springandreact.HelloController`: 
+would only get a 404 page. So let's add a controller called `HelloController`: 
 
 ```java
 package no.kantega.springandreact;
