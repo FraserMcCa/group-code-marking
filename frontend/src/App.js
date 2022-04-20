@@ -3,31 +3,52 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import logo from './logo.svg';
 import './App.css';
-const mapValuesToOptions = (values) => values.map(e =>  {
-    return { 'value': e, 'label': e}
-}
+import CommitCount from "./CommitCount";
+
+const mapValuesToOptions = (values) => values.map(e => {
+        return {'value': e, 'label': e}
+    }
 );
-function App () {
+
+function App() {
     const [message, setMessage] = useState([]);
+    const [committers, setCommitters] = useState({});
 
     useEffect(() => {
         fetch('/api/hello')
             .then(response => response.text())
             .then(message => {
-                console.log(mapValuesToOptions(JSON.parse(message)))
                 setMessage(mapValuesToOptions(JSON.parse(message)));
             });
-    },[])
+    }, [])
+
+    const onSelect = (value) => {
+        fetchRepoCommits(value.value);
+    }
+
+    const fetchRepoCommits = (repo) => {
+        if (repo !== "") {
+            fetch('/api/commits?repo=' + repo)
+                .then(response => response.text())
+                .then(message => {
+                    if (message !== "") {
+                        setCommitters(JSON.parse(message));
+                        console.log(JSON.parse(message));
+                    } else {
+                        setCommitters({})
+                    }
+
+                });
+        }
+    }
+
     return (
         <div className="App">
-        <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo"/>
-        <h1 className="App-title">Dog</h1>
-        </header>
-        <p className="App-intro">To get started, edit <code>src/App.js</code> and save to reload.</p>
-        <Dropdown options={message}/>
-    </div>
-)
+            <Dropdown onChange={onSelect} options={message}/>
+
+            <CommitCount commiters={committers}/>
+        </div>
+    )
 }
 
 export default App;

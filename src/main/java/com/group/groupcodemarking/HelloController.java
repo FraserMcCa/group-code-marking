@@ -19,11 +19,10 @@ public class HelloController {
     @GetMapping("/api/hello")
     public List<String> hello() throws IOException, URISyntaxException, InterruptedException, ParseException {
         collaborationDAO.getCodeScan();
-        collaborationDAO.getCommits("dog");
         return collaborationDAO.getGitHubDetails();
     }
 
-    @PostMapping("/commits")
+    @GetMapping("/api/commits")
     public Map<String, Integer> commits(String repo) throws IOException, URISyntaxException, InterruptedException, ParseException {
         return collaborationDAO.getCommits(repo);
     }
