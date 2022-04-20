@@ -16,6 +16,7 @@ public class HelloController {
 
     @GetMapping("/api/hello")
     public List<String> hello() throws IOException, URISyntaxException, InterruptedException, ParseException {
+        collaborationDAO.getCodeScan();
         return collaborationDAO.getGitHubDetails();
     }
 }

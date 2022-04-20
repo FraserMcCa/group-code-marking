@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CollaborationDAO {
-    private static final String authorization = "Bearer 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";
+    private static final String authorization = "Bearer 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";
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
 
@@ -32,5 +32,17 @@ public class CollaborationDAO {
         var response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         JSONArray jsonObject = (JSONArray) new JSONParser().parse(response.body());
         return jsonObject.stream().map(e -> (JSONObject) e).map(e -> e.getAsString("name")).collect(Collectors.toList());
+    }
+
+    public void getCodeScan() throws IOException, URISyntaxException, InterruptedException, ParseException {
+        URI url = new URI("https://api.github.com/FraserMcCa/CollaborativeCodeMarkingTool/code-scanning/alerts");
+        var request = HttpRequest.newBuilder().uri(url)
+                .setHeader("Authorization", authorization)
+                .GET()
+                .build();
+
+        var response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        JSONObject jsonObject = (JSONObject) new JSONParser().parse(response.body());
+        System.out.println(jsonObject);
     }
 }
